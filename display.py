@@ -3,6 +3,9 @@ from PIL import Image, ImageTk
 import os
 
 class Window:
+    """
+    Функция отрисовывающая графику приложения
+    """
     def __init__(self):
         self.window = Tk()
         base = os.path.dirname(__file__)
