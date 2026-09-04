@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import os
 import data_base as wdb
 import time
+import function as func
 import datetime
 
 
@@ -12,41 +13,41 @@ class Window:
     """
     Функция отрисовывающая графику приложения
     """
-    def __init__(self):
-        self.window = Tk()
-        base = os.path.dirname(__file__)
-        path = os.path.join(base, "template", "media", "image", "worky.jpg")
-        self.img = ImageTk.PhotoImage(Image.open(path))
-        self.label = Label(self.window, image=self.img)
-        self.label.pack()
-        self.window.geometry("380x188")
-        self.window.title('Воркометр 2.5')
+    #def __init__(self):
+    window = Tk()
+    base = os.path.dirname(__file__)
+    path = os.path.join(base, "template", "media", "image", "worky.jpg")
+    img = ImageTk.PhotoImage(Image.open(path))
+    label = Label(window, image=img)
+    label.pack()
+    window.geometry("380x188")
+    window.title('Воркометр 2.5')
 
-        # Временные файлы
-        Login = 'Гена Тумблер'
-        counter_dst = '12345'
-        counter_odo = '12345678'
-        status = 1
+    # Временные файлы
+    Login = 'Гена Тумблер'
+    counter_dst = '12345'
+    counter_odo = '12345678'
+    status = 1
 
-        Login_txt = Login
-        counter_dst_txt = counter_dst
-        counter_odo_txt = counter_odo
+    Login_txt = Login
+    counter_dst_txt = counter_dst
+    counter_odo_txt = counter_odo
 
-        fone_label = Label(self.window, image=self.img)
-        fone_label.place(x=0, y=0)
-        Login_label = Label(fone_label, text=Login_txt, font=('Roboto Bold', 12))
-        Login_label.place(x=5, y=150)
-        counter_dst_label = Label(fone_label, text=counter_dst_txt[0:3], font=('Roboto Bold', 12))
-        counter_dst_label.place(x=166, y=67)
-        counter_dst_float_label = Label(fone_label, text=counter_dst_txt[3], font=('Roboto Bold', 12))
-        counter_dst_float_label.place(x=194, y=67)
-        counter_dst_float_label.configure(fg='red')
-        counter_odo_label = Label(fone_label, text=counter_odo_txt[0:6], font=('Roboto Bold', 13))
-        counter_odo_label.place(x=156, y=102)
-        indication = Label(fone_label, text='STOP', fg='red', bg='black', font=('Roboto Bold', 20))
-        indication.place(x=3, y=130)
+    fone_label = Label(window, image=img)
+    fone_label.place(x=0, y=0)
+    Login_label = Label(fone_label, text=Login_txt, font=('Roboto Bold', 12))
+    Login_label.place(x=5, y=150)
+    counter_dst_label = Label(fone_label, text=counter_dst_txt[0:3], font=('Roboto Bold', 12))
+    counter_dst_label.place(x=166, y=67)
+    counter_dst_float_label = Label(fone_label, text=counter_dst_txt[3], font=('Roboto Bold', 12))
+    counter_dst_float_label.place(x=194, y=67)
+    counter_dst_float_label.configure(fg='red')
+    counter_odo_label = Label(fone_label, text=counter_odo_txt[0:6], font=('Roboto Bold', 13))
+    counter_odo_label.place(x=156, y=102)
+    indication = Label(fone_label, text='STOP', fg='red', bg='black', font=('Roboto Bold', 20))
+    indication.place(x=3, y=130)
 
-        self.window.mainloop()
+    #window.mainloop()
 
 
 
@@ -166,6 +167,49 @@ class ButtonCommand(Window):
         Window.window.destroy()
 
 
+class Buttons(Window):
+    """
+    Отображение кнопок в окне приложения и назначение им команд
+    """
+    @staticmethod
+    def button_start():
+        button_start = Button(
+            Window.fone_label, text='D', fg='green', font=('Roboto Bold', 16),
+            command=ButtonCommand.command_button_start
+        )
+        button_start.place(x=330, y=10)
+
+    @staticmethod
+    def button_stop():
+        button_stop = Button(
+            Window.fone_label, text='S', fg='red', font=('Roboto Bold', 16),
+            command=ButtonCommand.command_button_stop
+        )
+        button_stop.place(x=330, y=60)
+
+    @staticmethod
+    def button_null():
+        button_null = Button(
+            Window.fone_label, text='0', fg='black', font=('Roboto Bold', 16),
+            command=ButtonCommand.command_button_null
+        )
+        button_null.place(x=330, y=110)
+
+
+class MenuSettings(Window):
+    """
+    Класс меню приложения
+    """
+    menu = Menu(Window.fone_label)
+    new_item = Menu(menu, tearoff=0)
+    new_item.add_command(label='Drive', command=ButtonCommand.command_button_start)
+    new_item.add_command(label='Stop', command=ButtonCommand.command_button_stop)
+    new_item.add_command(label='Null', command=ButtonCommand.command_button_null)
+    new_item.add_command(label='Reserve Load', command=ButtonCommand.reserve_load)
+    new_item.add_command(label='Enter Name', command=ButtonCommand.enter_user_name)
+    new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
+    menu.add_cascade(label='file', menu=new_item)
+    Window.window.config(menu=menu)
         
 
 

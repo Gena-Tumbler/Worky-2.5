@@ -1,3 +1,23 @@
 import display
+from tkinter import *
+import data_base as wdb
+import threading
 
-display.Window()
+"""
+Основное приложение
+"""
+
+Login = 'Shock'
+counter_dst = 12345
+counter_odo = 12345678
+
+worky_display = display.Window()
+button_aplication = display.Buttons()
+button_aplication.button_start()
+button_aplication.button_stop()
+button_aplication.button_null()
+
+startproces = threading.Thread(target=display.ButtonCommand.command_button_start)
+startproces.start()
+
+worky_display.window.mainloop()
