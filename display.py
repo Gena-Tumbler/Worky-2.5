@@ -20,7 +20,7 @@ class Window:
     img = ImageTk.PhotoImage(Image.open(path))
     label = Label(window, image=img)
     label.pack()
-    window.geometry("380x188")
+    window.geometry("380x222")
     window.title('Воркометр 2.5')
 
     # Временные файлы
@@ -40,15 +40,12 @@ class Window:
     counter_dst_label = Label(fone_label, text=counter_dst_txt[0:3], font=('Roboto Bold', 12))
     counter_dst_label.place(x=166, y=67)
     counter_dst_float_label = Label(fone_label, text=counter_dst_txt[3], font=('Roboto Bold', 12))
-    counter_dst_float_label.place(x=194, y=67)
+    counter_dst_float_label.place(x=197, y=67)
     counter_dst_float_label.configure(fg='red')
     counter_odo_label = Label(fone_label, text=counter_odo_txt[0:6], font=('Roboto Bold', 13))
     counter_odo_label.place(x=156, y=102)
     indication = Label(fone_label, text='STOP', fg='red', bg='black', font=('Roboto Bold', 20))
-    indication.place(x=3, y=130)
-
-    #window.mainloop()
-
+    indication.place(x=3, y=100)
 
 
 class ButtonCommand(Window):
@@ -83,7 +80,7 @@ class ButtonCommand(Window):
             Window.Login_label.configure(text=Login)
             while Window.status == 0:
                 Window.indication.configure(text='DRIVE', fg='green')
-                Window.Login_lagel.configure(text=Login)
+                Window.Login_label.configure(text=Login)
                 int_odo += 1
                 int_dst += 1
                 int_odo = func.big_number(int_odo, 100000000)
@@ -94,7 +91,7 @@ class ButtonCommand(Window):
                 Window.counter_dst_label.configure(text=str_dst[0:3])
                 Window.counter_dst_float_label.configure(text=str_dst[3])
                 counter_data_up = wdb.Counter(Window.Login, int_dst, int_odo)
-                counter_data_up.update()
+                counter_data_up.update(1)
                 counter_data_up.close()
                 time.sleep(1)
 
@@ -175,7 +172,7 @@ class Buttons(Window):
     def button_start():
         button_start = Button(
             Window.fone_label, text='D', fg='green', font=('Roboto Bold', 16),
-            command=ButtonCommand.command_button_start
+            command=ButtonCommand.command_button_start_status
         )
         button_start.place(x=330, y=10)
 
@@ -197,19 +194,35 @@ class Buttons(Window):
 
 
 class MenuSettings(Window):
+    print('menu settings1')
+    @staticmethod
+    def create_menu():
+        print('menu settings2')
+        menu = Menu(Window.window)
+        new_item = Menu(menu, tearoff=0)
+        new_item.add_command(label='Drive', command=ButtonCommand.command_button_start_status)
+        new_item.add_command(label='Stop', command=ButtonCommand.command_button_stop)
+        new_item.add_command(label='Null', command=ButtonCommand.command_button_null)
+        new_item.add_command(label='Reserve Load', command=ButtonCommand.reserve_load)
+        new_item.add_command(label='Enter Name', command=ButtonCommand.enter_user_name)
+        new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
+        menu.add_cascade(label='file', menu=new_item)
+        Window.window.config(menu=menu)
+        print(Window.window.config('menu'))
+
     """
     Класс меню приложения
     """
-    menu = Menu(Window.fone_label)
-    new_item = Menu(menu, tearoff=0)
-    new_item.add_command(label='Drive', command=ButtonCommand.command_button_start)
-    new_item.add_command(label='Stop', command=ButtonCommand.command_button_stop)
-    new_item.add_command(label='Null', command=ButtonCommand.command_button_null)
-    new_item.add_command(label='Reserve Load', command=ButtonCommand.reserve_load)
-    new_item.add_command(label='Enter Name', command=ButtonCommand.enter_user_name)
-    new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
-    menu.add_cascade(label='file', menu=new_item)
-    Window.window.config(menu=menu)
+#    menu = Menu(Window.window)
+#    new_item = Menu(menu, tearoff=0)
+#    new_item.add_command(label='Drive', command=ButtonCommand.command_button_start_status)
+#    new_item.add_command(label='Stop', command=ButtonCommand.command_button_stop)
+#    new_item.add_command(label='Null', command=ButtonCommand.command_button_null)
+#    new_item.add_command(label='Reserve Load', command=ButtonCommand.reserve_load)
+#    new_item.add_command(label='Enter Name', command=ButtonCommand.enter_user_name)
+#    new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
+#    menu.add_cascade(label='file', menu=new_item)
+#    Window.window.config(menu=menu)
         
 
 
