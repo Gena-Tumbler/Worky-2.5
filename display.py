@@ -55,14 +55,14 @@ class ButtonCommand(Window):
     Данный класс отвечает за выполнение команд взависимости от нажимаемых кнопок
     """
     @staticmethod
-    def command_button_start_status:
+    def command_button_start_status():
         """
         Изменения статуса выполнения после нажатия кнопки start
         """
         Window.status = 0
 
     @staticmethod
-    def command_button_start:
+    def command_button_start():
         """
         Команда start отвечает за выполнение программы
         """
@@ -98,10 +98,72 @@ class ButtonCommand(Window):
                 time.sleep(1)
 
     @staticmethod
-    def command_button_stop:
+    def command_button_stop():
         """
         Команда stop отвечает за остановку выполнения программы
         """
+        Window.status = 1
+        Window.indication.configure(text='STOP', fg='red')
+        counter_data = wdb.Counter('Shock', 0, 0)
+        counter = counter_data.download(1)
+        counter_data.close()
+        Login, counter_dst, counter_odo = func.repac_download_counter(counter)
+        counter_data_reserve = wdb.Counter(Login, counter_dst, counter_odo)
+        counter_data_reserve.update(2)
+        counter_data_reserve.close()
+
+    @staticmethod
+    def command_button_null():
+        """
+        Кнопка обнуления верхнего счетчика (суточного)
+        """
+        counter_data = wdb.Counter('Shock', 0, 0)
+        counter = counter_data.download(1)
+        counter_data.close()
+        Login, counter_dst, counter_odo = func.repac_download_counter(counter)
+        counter_data_new = wdb.Counter(Login, 0, counter_odo)
+        counter_data_new.update(1)
+        counter_data.close()
+
+    @staticmethod
+    def reserve_load():
+        """
+        Загрузка резервной копии
+        """
+        counter_data = wdb.Counter('Shock', 0, 0)
+        counter = counter_data.download(2)
+        counter_data.close()
+        Login, counter_dst, counter_odo = func.repac_download_counter(counter)
+        counter_data_new = wdb.Counter(Login, counter_dst, counter_odo)
+        counter_data_new.save(1)
+        counter_data_new.close()
+
+    @staticmethod
+    def enter_user_name():
+        """
+        Ввод имени пользователя
+        """
+        user_name_txt = Entry(Window.window, width=10)
+        user_name_txt.place(x=10, y=10)
+
+        def get_user_input():
+            Login = user_name_txt.get()
+            print(Login, 'ustxtgetLogin')
+            user_name_txt.place_forget()
+            submit_button.place_forget()
+            counter = wdb.Counter(Login, 0, 0)
+            print(counter, 'counternext')
+            counter.save(1)
+            counter.close()
+        submit_button = Button(Window.window, text='Submit', command=get_user_input)
+        submit_button.place(x=10, y=40)
+
+    @staticmethod
+    def clickexit():
+        """
+        Выход из приложения
+        """
+        Window.window.destroy()
 
 
         
