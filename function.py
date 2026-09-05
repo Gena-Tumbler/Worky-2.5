@@ -28,8 +28,8 @@ def repac_download_counter(pack_counter):
     Функция распаковки загруженных данных
     """
     try:
-        Login, counter_odo, counter_dst = pack_counter[0][1], pack_counter[0][2], pack_counter[0][3]
-        return Login, counter_odo, counter_dst
+        Login, counter_dst, counter_odo = pack_counter[0][1], pack_counter[0][2], pack_counter[0][3]
+        return Login, counter_dst, counter_odo
     except IndexError: #Если основная запись в бд повредиться
         return 'Error', 0, 0
 
