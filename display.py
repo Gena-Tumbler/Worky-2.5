@@ -209,6 +209,14 @@ class Buttons(Window):
         button_enter_user_name.place(x=5, y=5)
 
     @staticmethod
+    def button_reserve_load():
+        button_reserve_load = Button(
+            Window.fone_label, text='Reserve Load', fg='red', font=('Roboto Bold', 16),
+            command=ButtonCommand.reserve_load
+        )
+        button_reserve_load.place(x=210, y=5)
+
+    @staticmethod
     def button_exit():
         button_exit = Button(
             Window.fone_label, text='EXIT', fg='red', bg='white', font=('Roboto Bold', 12),
