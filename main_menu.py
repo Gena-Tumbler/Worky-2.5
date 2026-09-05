@@ -7,9 +7,6 @@ import threading
 Основное приложение
 """
 
-Login = 'Shock'
-counter_dst = 12345
-counter_odo = 12345678
 
 
 worky_display = display.Window()
@@ -18,7 +15,7 @@ button_aplication.button_start()
 button_aplication.button_stop()
 button_aplication.button_null()
 button_aplication.button_exit()
-button_aplication.button_settup()
+
 
 
 

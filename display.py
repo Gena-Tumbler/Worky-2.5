@@ -13,7 +13,6 @@ class Window:
     """
     Функция отрисовывающая графику приложения
     """
-    #def __init__(self):
     window = Tk()
     base = os.path.dirname(__file__)
     path = os.path.join(base, "template", "media", "image", "worky.jpg")
@@ -23,13 +22,16 @@ class Window:
     window.geometry("380x190")
     window.title('Воркометр 2.5')
 
-    # Временные файлы
-    Login = 'Гена Тумблер'
-    counter_dst = '12345'
-    counter_odo = '12345678'
     status = 1
     running = True
     status_settup = 1
+
+    counter_data = wdb.Counter('Login', 0, 0)
+    counter = counter_data.download(1)
+    counter_data.close()
+    Login, counter_dst, counter_odo = func.repac_download_counter(counter)
+    counter_dst = func.integer_to_string(counter_dst, 5)
+    counter_odo = func.integer_to_string(counter_odo, 8)
 
     Login_txt = Login
     counter_dst_txt = counter_dst
@@ -42,7 +44,7 @@ class Window:
     counter_dst_label = Label(fone_label, text=counter_dst_txt[0:3], font=('Roboto Bold', 12))
     counter_dst_label.place(x=166, y=67)
     counter_dst_float_label = Label(fone_label, text=counter_dst_txt[3], font=('Roboto Bold', 12))
-    counter_dst_float_label.place(x=197, y=67)
+    counter_dst_float_label.place(x=200, y=67)
     counter_dst_float_label.configure(fg='red')
     counter_odo_label = Label(fone_label, text=counter_odo_txt[0:6], font=('Roboto Bold', 13))
     counter_odo_label.place(x=156, y=102)
@@ -155,7 +157,7 @@ class ButtonCommand(Window):
             user_name_txt.place_forget()
             submit_button.place_forget()
             counter = wdb.Counter(Login, 0, 0)
-            counter.save(1)
+            counter.update(1)
             counter.close()
         submit_button = Button(Window.window, text='Submit', command=get_user_input)
         submit_button.place(x=10, y=40)
@@ -199,11 +201,12 @@ class Buttons(Window):
         button_null.place(x=320, y=95)
 
     @staticmethod
-    def button_settup():
-        button_settup = Button(
-            Window.fone_label, text='*', fg='red', font=('Roboto Bold', 16),
+    def button_enter_user_name():
+        button_enter_user_name = Button(
+            Window.fone_label, text='USER', fg='red', font=('Roboto Bold', 20),
+            command=ButtonCommand.enter_user_name
         )
-        button_settup.place(x=5, y=5)
+        button_enter_user_name.place(x=5, y=5)
 
     @staticmethod
     def button_exit():
@@ -229,19 +232,7 @@ class MenuSettings(Window):
         Window.window.config(menu=menu)
 
 
-    """
-    Класс меню приложения
-    """
-#    menu = Menu(Window.window)
-#    new_item = Menu(menu, tearoff=0)
-#    new_item.add_command(label='Drive', command=ButtonCommand.command_button_start_status)
-#    new_item.add_command(label='Stop', command=ButtonCommand.command_button_stop)
-#    new_item.add_command(label='Null', command=ButtonCommand.command_button_null)
-#    new_item.add_command(label='Reserve Load', command=ButtonCommand.reserve_load)
-#    new_item.add_command(label='Enter Name', command=ButtonCommand.enter_user_name)
-#    new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
-#    menu.add_cascade(label='file', menu=new_item)
-#    Window.window.config(menu=menu)
+
         
 
 
