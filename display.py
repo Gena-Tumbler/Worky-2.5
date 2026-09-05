@@ -20,7 +20,7 @@ class Window:
     img = ImageTk.PhotoImage(Image.open(path))
     label = Label(window, image=img)
     label.pack()
-    window.geometry("380x222")
+    window.geometry("380x190")
     window.title('Воркометр 2.5')
 
     # Временные файлы
@@ -28,6 +28,8 @@ class Window:
     counter_dst = '12345'
     counter_odo = '12345678'
     status = 1
+    running = True
+    status_settup = 1
 
     Login_txt = Login
     counter_dst_txt = counter_dst
@@ -78,7 +80,11 @@ class ButtonCommand(Window):
             int_odo = func.string_to_integer(counter_odo)
             int_dst = func.string_to_integer(counter_dst)
             Window.Login_label.configure(text=Login)
+            if not Window.running:
+                break
             while Window.status == 0:
+                if not Window.running:
+                    break
                 Window.indication.configure(text='DRIVE', fg='green')
                 Window.Login_label.configure(text=Login)
                 int_odo += 1
@@ -146,11 +152,9 @@ class ButtonCommand(Window):
 
         def get_user_input():
             Login = user_name_txt.get()
-            print(Login, 'ustxtgetLogin')
             user_name_txt.place_forget()
             submit_button.place_forget()
             counter = wdb.Counter(Login, 0, 0)
-            print(counter, 'counternext')
             counter.save(1)
             counter.close()
         submit_button = Button(Window.window, text='Submit', command=get_user_input)
@@ -161,7 +165,9 @@ class ButtonCommand(Window):
         """
         Выход из приложения
         """
-        Window.window.destroy()
+        Window.status = 1
+        Window.running = False
+        Window.window.after(100, Window.window.destroy)
 
 
 class Buttons(Window):
@@ -174,7 +180,7 @@ class Buttons(Window):
             Window.fone_label, text='D', fg='green', font=('Roboto Bold', 16),
             command=ButtonCommand.command_button_start_status
         )
-        button_start.place(x=330, y=10)
+        button_start.place(x=320, y=5)
 
     @staticmethod
     def button_stop():
@@ -182,7 +188,7 @@ class Buttons(Window):
             Window.fone_label, text='S', fg='red', font=('Roboto Bold', 16),
             command=ButtonCommand.command_button_stop
         )
-        button_stop.place(x=330, y=60)
+        button_stop.place(x=320, y=50)
 
     @staticmethod
     def button_null():
@@ -190,14 +196,27 @@ class Buttons(Window):
             Window.fone_label, text='0', fg='black', font=('Roboto Bold', 16),
             command=ButtonCommand.command_button_null
         )
-        button_null.place(x=330, y=110)
+        button_null.place(x=320, y=95)
+
+    @staticmethod
+    def button_settup():
+        button_settup = Button(
+            Window.fone_label, text='*', fg='red', font=('Roboto Bold', 16),
+        )
+        button_settup.place(x=5, y=5)
+
+    @staticmethod
+    def button_exit():
+        button_exit = Button(
+            Window.fone_label, text='EXIT', fg='red', bg='white', font=('Roboto Bold', 12),
+            command=ButtonCommand.clickexit
+        )
+        button_exit.place(x=300, y=140)
 
 
 class MenuSettings(Window):
-    print('menu settings1')
     @staticmethod
     def create_menu():
-        print('menu settings2')
         menu = Menu(Window.window)
         new_item = Menu(menu, tearoff=0)
         new_item.add_command(label='Drive', command=ButtonCommand.command_button_start_status)
@@ -208,7 +227,7 @@ class MenuSettings(Window):
         new_item.add_command(label='Exit', command=ButtonCommand.clickexit)
         menu.add_cascade(label='file', menu=new_item)
         Window.window.config(menu=menu)
-        print(Window.window.config('menu'))
+
 
     """
     Класс меню приложения

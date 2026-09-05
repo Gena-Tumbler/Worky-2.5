@@ -17,6 +17,8 @@ button_aplication = display.Buttons()
 button_aplication.button_start()
 button_aplication.button_stop()
 button_aplication.button_null()
+button_aplication.button_exit()
+button_aplication.button_settup()
 
 
 
