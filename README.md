@@ -20,6 +20,7 @@ pip install pillow
 Запуск
 bash
 python3 main_menu.py
+либо с иконки worky.command
 
 Структура:
 -main_menu.py - основной запуск
